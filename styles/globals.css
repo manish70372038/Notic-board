@@ -9,4 +9,8 @@
   html {
     -webkit-font-smoothing: antialiased;
   }
+  body {
+    background-color: #f1f5f9;
+    font-family: 'Segoe UI', sans-serif;
+  }
 }
