@@ -3,8 +3,8 @@ import { useState } from "react";
 
 const CATEGORY_COLORS = {
   Exam: "bg-blue-100 text-blue-700",
-  Event: "bg-green-100 text-green-700",
-  General: "bg-gray-100 text-gray-600",
+  Event: "bg-emerald-100 text-emerald-700",
+  General: "bg-slate-100 text-slate-600",
 };
 
 export default function NoticeCard({ notice, onDeleted }) {
@@ -26,37 +26,39 @@ export default function NoticeCard({ notice, onDeleted }) {
   });
 
   return (
-    <div className={`relative bg-white rounded-xl shadow-sm border flex flex-col overflow-hidden ${notice.priority === "Urgent" ? "border-red-400" : "border-slate-200"}`}>
-      {notice.priority === "Urgent" && <div className="h-1 bg-red-500 w-full" />}
+    <div className={`relative bg-white rounded-2xl shadow border flex flex-col overflow-hidden transition hover:shadow-md ${notice.priority === "Urgent" ? "border-red-400" : "border-slate-200"}`}>
+      {notice.priority === "Urgent" && <div className="h-1.5 bg-gradient-to-r from-red-500 to-orange-400 w-full" />}
 
       {notice.imageUrl && (
-        <img src={notice.imageUrl} alt={notice.title} className="w-full h-40 object-cover" />
+        <img src={notice.imageUrl} alt={notice.title} className="w-full h-44 object-cover" />
       )}
 
-      <div className="p-4 flex flex-col gap-2 flex-1">
+      <div className="p-5 flex flex-col gap-3 flex-1">
         <div className="flex items-center gap-2 flex-wrap">
           {notice.priority === "Urgent" && (
-            <span className="text-xs font-bold bg-red-100 text-red-600 px-2 py-0.5 rounded-full">🔴 Urgent</span>
+            <span className="text-xs font-bold bg-red-100 text-red-600 px-3 py-1 rounded-full border border-red-200">
+              🔴 Urgent
+            </span>
           )}
-          <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${CATEGORY_COLORS[notice.category]}`}>
+          <span className={`text-xs font-semibold px-3 py-1 rounded-full ${CATEGORY_COLORS[notice.category]}`}>
             {notice.category}
           </span>
-          <span className="ml-auto text-xs text-slate-400">{date}</span>
+          <span className="ml-auto text-xs text-slate-400 font-medium">{date}</span>
         </div>
 
-        <h2 className="font-semibold text-slate-800 text-sm leading-snug">{notice.title}</h2>
-        <p className="text-xs text-slate-500 leading-relaxed line-clamp-3 flex-1">{notice.body}</p>
+        <h2 className="font-bold text-slate-800 text-base leading-snug">{notice.title}</h2>
+        <p className="text-sm text-slate-500 leading-relaxed line-clamp-3 flex-1">{notice.body}</p>
 
-        <div className="flex gap-2 pt-2 border-t border-slate-100 mt-1">
+        <div className="flex gap-2 pt-3 border-t border-slate-100">
           <button
             onClick={() => router.push(`/notices/edit/${notice.id}`)}
-            className="flex-1 text-xs font-medium text-indigo-600 hover:bg-indigo-50 py-1.5 rounded-lg transition-colors"
+            className="flex-1 text-sm font-semibold text-indigo-600 hover:bg-indigo-50 py-2 rounded-xl transition-colors"
           >
             ✏️ Edit
           </button>
           <button
             onClick={() => setShowConfirm(true)}
-            className="flex-1 text-xs font-medium text-red-500 hover:bg-red-50 py-1.5 rounded-lg transition-colors"
+            className="flex-1 text-sm font-semibold text-red-500 hover:bg-red-50 py-2 rounded-xl transition-colors"
           >
             🗑 Delete
           </button>
@@ -64,14 +66,25 @@ export default function NoticeCard({ notice, onDeleted }) {
       </div>
 
       {showConfirm && (
-        <div className="absolute inset-0 bg-white/95 flex flex-col items-center justify-center gap-4 p-6 rounded-xl">
-          <p className="text-center text-sm text-slate-700">
-            Delete <span className="font-semibold">"{notice.title}"</span>?
-            <br /><span className="text-xs text-slate-400">This cannot be undone.</span>
-          </p>
+        <div className="absolute inset-0 bg-white/96 backdrop-blur-sm flex flex-col items-center justify-center gap-5 p-6 rounded-2xl">
+          <div className="text-center">
+            <p className="text-2xl mb-2">🗑️</p>
+            <p className="text-sm font-semibold text-slate-700">Delete this notice?</p>
+            <p className="text-xs text-slate-400 mt-1">"{notice.title}"</p>
+            <p className="text-xs text-slate-400">This cannot be undone.</p>
+          </div>
           <div className="flex gap-3">
-            <button onClick={() => setShowConfirm(false)} className="px-4 py-1.5 text-sm border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50">Cancel</button>
-            <button onClick={handleDelete} disabled={deleting} className="px-4 py-1.5 text-sm bg-red-500 text-white rounded-lg hover:bg-red-600 disabled:opacity-60">
+            <button
+              onClick={() => setShowConfirm(false)}
+              className="px-5 py-2 text-sm border border-slate-200 rounded-xl text-slate-600 hover:bg-slate-50 font-medium"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleDelete}
+              disabled={deleting}
+              className="px-5 py-2 text-sm bg-red-500 text-white rounded-xl hover:bg-red-600 disabled:opacity-60 font-semibold"
+            >
               {deleting ? "Deleting..." : "Yes, Delete"}
             </button>
           </div>
